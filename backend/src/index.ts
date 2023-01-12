@@ -8,7 +8,11 @@ import initSocket from './socket';
 
 const main = async () => {
   try {
-    const io = new socketio(3000)
+    const io = new socketio(3000, {
+      cors: {
+        origin: '*'
+      }
+    })
     const {database, connection} = await initDb()
     const app = await initApp(database, connection)
     if (connection.open) {
