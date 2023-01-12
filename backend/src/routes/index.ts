@@ -1,11 +1,13 @@
 import type { Express, Request, Response } from 'express';
 import type { R, Connection } from 'rethinkdb-ts'
+import scoresApi from './scores'
 
 export const registerRoutes = async (
   app: Express,
   database: R,
   connection: Connection
 ) => {
+
   app.get('/setup', async (req: Request, res: Response) => {
     try {
       const result = await database.db('test').tableCreate('scores').run(connection)
@@ -14,19 +16,22 @@ export const registerRoutes = async (
       res.json({ error })
     }
   })
-  app.get('/', (req: Request, res: Response) => {
-    res.json({ message: 'get default' })
+
+  app.use(scoresApi(database, connection))
+
+  // default 404 if not found
+  app.use((req, res, next) => {
+    res.status(404);
+  
+    res.format({
+      json: function () {
+        res.json({ error: 'Not found' })
+      },
+      default: function () {
+        res.type('txt').send('Not found')
+      }
+    })
   })
-  app.get('/scores', async (req: Request, res: Response) => {
-    try {
-      const result = await database.table('scores').run(connection)
-      res.json({
-        results: result
-      })
-    } catch (err) {
-      res.json({err})
-    }
-    res.json({ message: 'get scores' })
-  })
+
   return app;
 };
