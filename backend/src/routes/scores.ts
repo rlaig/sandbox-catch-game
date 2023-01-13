@@ -10,40 +10,57 @@ export default (
 
   router.get('/scores', async (req: Request, res: Response) => {
     try {
-      const result = await database.table('scores').run(connection)
+      const results = await database.table('scores').orderBy('score').run(connection, {arrayLimit: 100})
       res.json({
-        results: result
+        status: 'ok',
+        response: results
       })
     } catch (err) {
-      res.json({err})
+      res.json({
+        status: 'ok',
+        message: err
+      })
     }
   })
 
-  router.get('/scores/add/:score', async (req: Request, res: Response) => {
+  router.post('/scores/add', async (req: Request, res: Response) => {
+    const { name, score } = req.body
+    if (!name || !score)
+      res.json({
+        status: 'error',
+        message: 'invalid request'
+      })
+
     try {
       const payload = {
-        name: 'anonymous',
-        score: req.params.score
+        name: String(name),
+        score: parseInt(score)
       }
-      const result = await database.table('scores').insert(payload).run(connection)
+      const results = await database.table('scores').insert(payload).run(connection)
       res.json({
-        params: req.params,
-        payload: payload,
-        results: result
+        status: 'ok',
+        results: results
       })
     } catch (err) {
-      res.json({err})
+      res.json({
+        status: 'ok',
+        message: err
+      })
     }
   })
 
   router.get('/scores/reset', async (req: Request, res: Response) => {
     try {
-      const result = await database.table('scores').delete().run(connection)
+      const results = await database.table('scores').delete().run(connection)
       res.json({
-        results: result
+        status: 'ok',
+        response: results
       })
     } catch (err) {
-      res.json({err})
+      res.json({
+        status: 'ok',
+        message: err
+      })
     }
   })
 

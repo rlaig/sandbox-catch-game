@@ -1,6 +1,12 @@
 import { configOptions } from  '../types'
 
 export const config: configOptions = {
+  socketPort: 3000,
+  socketConfig: {
+    cors: {
+      origin: '*'
+    }
+  },
   port: 3010,
   connectionOptions: {
     server: {

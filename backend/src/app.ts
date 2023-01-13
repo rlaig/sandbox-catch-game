@@ -9,11 +9,11 @@ import compression from 'compression'
 export default async function(database: R, connection: Connection) {
   const app = express()
 
+  app.use(helmet())
+  app.use(compression())
+  app.use(cors())
   app.use(bodyParser.urlencoded({ extended: false }))
   app.use(bodyParser.json())
-  app.use(compression())
-  app.use(helmet())
-  app.use(cors())
 
   await registerRoutes(app, database, connection);
   return app;

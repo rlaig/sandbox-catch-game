@@ -6,20 +6,26 @@ export const registerRoutes = async (
   app: Express,
   database: R,
   connection: Connection
-) => {
-
+) => { 
   app.get('/setup', async (req: Request, res: Response) => {
     try {
       const result = await database.db('test').tableCreate('scores').run(connection)
-      res.json({ result })
+      res.json({
+        status: 'ok',
+        response: result
+       })
     } catch (error) {
-      res.json({ error })
+      res.json({ 
+        status: 'error',
+        error
+      })
     }
   })
 
+  // register scores api routes
   app.use(scoresApi(database, connection))
 
-  // default 404 if not found
+  // register 404 if not found
   app.use((req, res, next) => {
     res.status(404);
   
