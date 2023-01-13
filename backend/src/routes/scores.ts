@@ -30,22 +30,23 @@ export default (
         status: 'error',
         message: 'invalid request'
       })
-
-    try {
-      const payload = {
-        name: String(name),
-        score: parseInt(score)
+    else {
+      try {
+        const payload = {
+          name: String(name),
+          score: parseInt(score)
+        }
+        const results = await database.table('scores').insert(payload).run(connection)
+        res.json({
+          status: 'ok',
+          results: results
+        })
+      } catch (err) {
+        res.json({
+          status: 'ok',
+          message: err
+        })
       }
-      const results = await database.table('scores').insert(payload).run(connection)
-      res.json({
-        status: 'ok',
-        results: results
-      })
-    } catch (err) {
-      res.json({
-        status: 'ok',
-        message: err
-      })
     }
   })
 
