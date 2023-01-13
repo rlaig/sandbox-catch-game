@@ -3,7 +3,7 @@ import './App.css'
 import io, { Socket } from 'socket.io-client'
 import { motion } from "framer-motion"
 
-export const motionComponent = (label: string, onclick?: ()=>void) => (
+export const menuItem = (label: string, onclick?: ()=>void) => (
   <motion.div
     className="box"
     onClick={onclick}
@@ -24,9 +24,9 @@ function App() {
 
   return (
     <div className="App">
-      { motionComponent('Menu 1') }
+      { menuItem('Menu 1') }
       <br />
-      { motionComponent('Menu 2') }
+      { menuItem('Menu 2') }
       { String(import.meta.env.VITE_APP_API_BASE_URL || 'n/a') }
     </div>
   )
