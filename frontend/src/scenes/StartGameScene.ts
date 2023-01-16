@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
 
-const gameTimeInSeconds = 30
+const gameTimeInSeconds = 4
 
 export default class StartGameScene extends Phaser.Scene {
   constructor() {
@@ -62,6 +62,7 @@ export default class StartGameScene extends Phaser.Scene {
     const points = isBad ? ["e1", "e2"] : ["p1", "p2", "p3", "p4"]
     const group = isBad ? StartGameScene.badGroup : StartGameScene.goodGroup
     const randomIdx = Math.floor(Math.random() * points.length)
+    const particles = isBad ? this.add.particles('red') : this.add.particles('green') 
     const pointObject = group.create(x, y, points[randomIdx]).setScale(0.1)
 
     const valuex = Phaser.Math.Between(-200, 200);
@@ -70,16 +71,15 @@ export default class StartGameScene extends Phaser.Scene {
     pointObject.setBounce(1, 1)
     pointObject.setCollideWorldBounds(true)
     
-    const particles = isBad ? this.add.particles('red') : this.add.particles('green') 
     const emitter = particles.createEmitter({
-        speed: 100,
+        speed: 50,
         scale: { start: 0.1, end: 0 },
         blendMode: 'ADD',
-        lifespan: 300,
-        frequency: 50
+        lifespan: 500,
+        frequency: 30
     })
     emitter.startFollow(pointObject)
-    this.time.delayedCall(2000, function() {
+    this.time.delayedCall(1500, function() {
         particles.destroy();
     });
   }

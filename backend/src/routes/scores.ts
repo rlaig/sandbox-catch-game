@@ -25,6 +25,7 @@ export default (
   router.post('/scores/add', async (req: Request, res: Response) => {
     try {
       const { name, score } = req.body
+      console.log(req.body)
       if (score && !Number.isInteger(score)) {
         res.json({
           status: 'error',
@@ -32,7 +33,7 @@ export default (
         })
         return
       }
-      if (!name || !score)
+      if (name == undefined || score == undefined)
         res.json({
           status: 'error',
           message: 'invalid request'

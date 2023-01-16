@@ -1,24 +1,29 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useMount } from 'react-use'
+import { useQuery } from '@tanstack/react-query'
+import { motion, AnimatePresence } from 'framer-motion'
 import './App.css'
-import io, { Socket } from 'socket.io-client'
+import io from 'socket.io-client'
 import MenuItem from "./components/menuItem"
 import ScoreDialog from "./components/scoreDialog"
-
-import phaserGame from './components/PhaserGame'
-import {Game} from 'phaser'
-import StartGameScene from './scenes/StartGameScene'
-
 import { scoresApi } from './api/scoresApi'
 
-import { motion, AnimatePresence } from 'framer-motion'
+import {Game} from 'phaser'
+import phaserGame from './components/PhaserGame'
+import StartGameScene from './scenes/StartGameScene'
+
 
 function App() {
   const socket = io(`${window.location.protocol}//${window.location.hostname}:3000`)
   const [phaser, setPhaser] = useState<Game>();
   const [showMainMenu, setShowMainMenu] = useState<boolean>(true);
   const [score, setScore] = useState<number>(0);
-  const [showScoreModal, setShowScoreModal] = useState<boolean>(false);
+  const [showScoreModal, setShowScoreModal] = useState<boolean>(false)
+  const [showLeaderboards, setShowLeaderboards] = useState<boolean>(false)
+
+  const { isLoading, data: scoresData, refetch } = useQuery(['scores-top-100'],
+    () => scoresApi.getTop100Scores()
+  )
 
   const showMenu = (event: CustomEvent) => {
     console.log('CustomEvent showMenu', event)
@@ -27,27 +32,25 @@ function App() {
   const sendScore = (event: CustomEvent) => {
     console.log('CustomEvent sendScore', event)
     setScore(event.detail.score)
-    handleScoreModalOpen()
+    setShowMainMenu(false)
+    setShowScoreModal(true)
   }
 
-  // attach game container
   useMount(() => {
     if (!phaser) setPhaser(phaserGame())
     socket.on('scoreUpdated', updateScore)
-    // add event listener
+    // add event listeners  
     window.addEventListener('show-menu', (showMenu) as EventListener);
     window.addEventListener('send-score', (sendScore) as EventListener);
   })
 
   const updateScore = async (row: any) => {
-    console.log('update call', row)
-    const scores = await scoresApi.getTop100Scores()
-    console.log('score api call', scores)
+    console.log('[socket-io] `scoreUpdated` received', row)
+    await refetch()
   }
 
   const handleLeaderboards = () => {
     console.log('Leaderboard')
-    handleScoreModalOpen()
   }
 
   const handleStartGame = () => {
@@ -59,9 +62,9 @@ function App() {
     }
   }
 
-  const handleScoreModalOpen = () => {
-    setShowMainMenu(false)
-    setShowScoreModal(true)
+  const handleLeaderboardsClose = () => {
+    setShowMainMenu(true)
+    setShowLeaderboards(false)
   }
   const handleScoreModalClose = () => {
     setShowMainMenu(true)
@@ -78,7 +81,6 @@ function App() {
           <motion.div className='menu'
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.9 }}
-            exit={{ opacity: 0 }}
           >
             <div className='menu-container'>
               <div className='menu-panel'>
@@ -100,7 +102,7 @@ function App() {
         mode={'wait'}
         onExitComplete={() => null}
       >
-        {showScoreModal && <ScoreDialog handleClose={handleScoreModalClose} score={score}></ScoreDialog>}
+        {showScoreModal && <ScoreDialog handleClose={handleScoreModalClose} recordScore={score} refetch={refetch}></ScoreDialog>}
       </AnimatePresence>
     </div>
   )
