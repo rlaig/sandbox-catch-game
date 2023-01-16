@@ -3,6 +3,7 @@ import { useMount } from 'react-use'
 import './App.css'
 import io, { Socket } from 'socket.io-client'
 import menuItem from "./components/menuItem"
+import ScoreDialog from "./components/scoreDialog"
 
 import phaserGame from './components/PhaserGame'
 import {Game} from 'phaser'
@@ -10,11 +11,14 @@ import StartGameScene from './scenes/StartGameScene'
 
 import { scoresApi } from './api/scoresApi'
 
+import { AnimatePresence } from 'framer-motion'
+
 function App() {
   const socket = io(`${window.location.protocol}//${window.location.hostname}:3000`)
   const [phaser, setPhaser] = useState<Game>();
   const [showMainMenu, setShowMainMenu] = useState<boolean>(true);
   const [score, setScore] = useState<number>(0);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const showMenu = (event: CustomEvent) => {
     console.log('CustomEvent showMenu')
@@ -69,6 +73,11 @@ function App() {
     }
   }
 
+  const handleModalClose = () => {
+    setShowModal()
+    // https://fireship.io/lessons/framer-motion-modal/
+  }
+
   return (
     <div className='App'>
       <div id="game-container">
@@ -87,7 +96,13 @@ function App() {
           </div>
 
           <div className="score-dialog">
-
+            <AnimatePresence
+              initial={false}
+              exitBeforeEnter={true}
+              onExitComplete={() => null}
+            >
+              {showModal && <ScoreDialog handleClose={handleModalClose} text="Modal Dialog"></ScoreDialog>}
+            </AnimatePresence>
           </div>
 
         </div>
