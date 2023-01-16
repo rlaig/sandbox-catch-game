@@ -6,6 +6,7 @@ import './App.css'
 import io from 'socket.io-client'
 import MenuItem from "./components/menuItem"
 import ScoreDialog from "./components/scoreDialog"
+import LeaderboardsDialog from "./components/leaderboardsDialog"
 import { scoresApi } from './api/scoresApi'
 
 import {Game} from 'phaser'
@@ -51,6 +52,8 @@ function App() {
 
   const handleLeaderboards = () => {
     console.log('Leaderboard')
+    setShowMainMenu(false)
+    setShowLeaderboards(true)
   }
 
   const handleStartGame = () => {
@@ -103,6 +106,7 @@ function App() {
         onExitComplete={() => null}
       >
         {showScoreModal && <ScoreDialog handleClose={handleScoreModalClose} recordScore={score} refetch={refetch}></ScoreDialog>}
+        {showLeaderboards && <LeaderboardsDialog handleClose={handleLeaderboardsClose} recordScores={scoresData}></LeaderboardsDialog>}
       </AnimatePresence>
     </div>
   )

@@ -9,7 +9,7 @@ type ScorePayload = {
 
 const getTop100Scores = async (): Promise<Score[]> => {
   const result = await apiClient.get('/scores')
-  return result.data
+  return result.data?.response
 }
 
 const submitScore = async (payload: ScorePayload): Promise<Score> => {
