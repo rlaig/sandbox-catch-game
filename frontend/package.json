@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tanstack/react-query": "^4.22.0",
     "axios": "^1.2.2",
     "dotenv": "^16.0.3",
     "framer-motion": "^8.4.2",

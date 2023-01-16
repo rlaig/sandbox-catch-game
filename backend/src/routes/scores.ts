@@ -1,5 +1,4 @@
-import { Router } from 'express';
-import type { Request, Response } from 'express';
+import { Router, Request, Response } from 'express';
 import type { R, Connection } from 'rethinkdb-ts'
 
 export default (
@@ -24,14 +23,21 @@ export default (
   })
 
   router.post('/scores/add', async (req: Request, res: Response) => {
-    const { name, score } = req.body
-    if (!name || !score)
-      res.json({
-        status: 'error',
-        message: 'invalid request'
-      })
-    else {
-      try {
+    try {
+      const { name, score } = req.body
+      if (score && !Number.isInteger(score)) {
+        res.json({
+          status: 'error',
+          message: 'invalid score'
+        })
+        return
+      }
+      if (!name || !score)
+        res.json({
+          status: 'error',
+          message: 'invalid request'
+        })
+      else {
         const payload = {
           name: String(name),
           score: parseInt(score)
@@ -41,12 +47,12 @@ export default (
           status: 'ok',
           results: results
         })
-      } catch (err) {
-        res.json({
-          status: 'ok',
-          message: err
-        })
       }
+    } catch (err) {
+      res.json({
+        status: 'error',
+        message: err
+      })
     }
   })
 

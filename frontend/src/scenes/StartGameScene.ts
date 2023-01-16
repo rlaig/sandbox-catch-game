@@ -25,7 +25,6 @@ export default class StartGameScene extends Phaser.Scene {
     this.load.image('p4', '/assets/p4.png');
   }
 
-
   collectGood(player: Phaser.Types.Physics.Arcade.GameObjectWithBody, collect: Phaser.Types.Physics.Arcade.GameObjectWithBody) {
     StartGameScene.score += 50
     console.log('good', StartGameScene.score)
@@ -119,25 +118,27 @@ export default class StartGameScene extends Phaser.Scene {
   }
 
   create() {
+    // background
     this.add.image(512, 288, 'bg1');
-
+  
+    // platform
     StartGameScene.platforms = this.physics.add.staticGroup();
     StartGameScene.platforms.create(512, 575, 'ground').setScale(1).refreshBody();
 
+    // player
     StartGameScene.player = this.physics.add.sprite(512, 500, 'boat');
     StartGameScene.player.setBounce(0.7);
     StartGameScene.player.setCollideWorldBounds(true, 1, 1);
 
-    this.physics.add.collider(StartGameScene.player, StartGameScene.platforms);
-
-    // create cursor control
+    // cursor manager
     StartGameScene.cursors = this.input.keyboard.createCursorKeys();
 
-    // create groups
+    // groups
     StartGameScene.goodGroup = this.physics.add.group()
     StartGameScene.badGroup = this.physics.add.group()
 
-    // add overlap events
+    // add overlap & collider events
+    this.physics.add.collider(StartGameScene.player, StartGameScene.platforms);
     this.physics.add.overlap(
         StartGameScene.player,
         StartGameScene.badGroup,
@@ -175,7 +176,6 @@ export default class StartGameScene extends Phaser.Scene {
   }
 
   update(time: number, delta: number): void {
-
     if (StartGameScene.cursors.left.isDown)
     {
         StartGameScene.player.setVelocityX(-360);
@@ -193,24 +193,6 @@ export default class StartGameScene extends Phaser.Scene {
     {
         StartGameScene.player.setVelocityY(-130);
     }
-      
   }
 
-//   createEmitter() {
-//     const particles = this.add.particles('red')
-
-//     const emitter = particles.createEmitter({
-//       speed: 100,
-//       scale: { start: 1, end: 0 },
-//       blendMode: 'ADD',
-//     })
-
-//     const logo = this.physics.add.image(400, 100, 'logo')
-
-//     logo.setVelocity(100, 200)
-//     logo.setBounce(1, 1)
-//     logo.setCollideWorldBounds(true)
-
-//     emitter.startFollow(logo)
-//   }
 }

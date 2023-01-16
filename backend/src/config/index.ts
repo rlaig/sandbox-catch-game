@@ -7,6 +7,7 @@ export const config: configOptions = {
       origin: '*'
     }
   },
+  host: 'http://localhost',
   port: 3010,
   connectionOptions: {
     server: {

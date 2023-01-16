@@ -10,11 +10,11 @@ const main = async () => {
     const io = new socketio(config.socketPort, config.socketConfig)
     const {database, connection} = await initDb()
 
-    if (connection.open) {
+    if (connection && connection.open) {
       const app = await initApp(database, connection)
       await initSocket(io, database, connection)
       app.listen(config.port, async () => {
-        console.log(`Server is running at http://localhost:${config.port}`)
+        console.log(`Server is running at ${config.host}:${config.port}`)
       })
     }
   } catch (err) {
