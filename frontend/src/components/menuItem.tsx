@@ -3,19 +3,19 @@ import { motion } from 'framer-motion'
 
 type Props = {
   label: string
-  onclick?: () => void;
+  handleOnclick?: () => void;
 }
 
-export const menuItem: React.FC<Props> = ({
+export const MenuItem: React.FC<Props> = ({
   label,
-  onclick
+  handleOnclick
 }) => {
-  return <motion.div
-    className='menu-item'
-    onClick={onclick}
+  return <motion.button
+    className="button submit-button"
+    onClick={handleOnclick}
     whileHover={{ scale: 1 }}
     whileTap={{ scale: 0.9 }}
-  >{label}</motion.div>
+  >{label}</motion.button>
 }
 
-export default menuItem
+export default MenuItem

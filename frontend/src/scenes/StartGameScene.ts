@@ -1,5 +1,7 @@
 import Phaser from 'phaser'
 
+const gameTimeInSeconds = 30
+
 export default class StartGameScene extends Phaser.Scene {
   constructor() {
     super('startgame')
@@ -8,21 +10,15 @@ export default class StartGameScene extends Phaser.Scene {
   static gameTimer: Phaser.Time.TimerEvent
   static platforms: Phaser.Physics.Arcade.StaticGroup
   static player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody
+  static particleManager: Phaser.GameObjects.Particles.ParticleEmitterManager
+  static playerParticle: Phaser.GameObjects.Particles.ParticleEmitter
   static cursors: Phaser.Types.Input.Keyboard.CursorKeys
   static goodGroup: Phaser.GameObjects.Group
   static badGroup: Phaser.GameObjects.Group
   static score: number
 
   preload() {
-    this.load.image('bg1', '/assets/bg1a.png');
-    this.load.image('ground', '/assets/platform.png');
-    this.load.image('boat', '/assets/boat-small.png');
-    this.load.image('e1', '/assets/e1.png');
-    this.load.image('e2', '/assets/e2.png');
-    this.load.image('p1', '/assets/p1.png');
-    this.load.image('p2', '/assets/p2.png');
-    this.load.image('p3', '/assets/p3.png');
-    this.load.image('p4', '/assets/p4.png');
+    // assets already preloaded at MainScene.ts
   }
 
   collectGood(player: Phaser.Types.Physics.Arcade.GameObjectWithBody, collect: Phaser.Types.Physics.Arcade.GameObjectWithBody) {
@@ -110,7 +106,7 @@ export default class StartGameScene extends Phaser.Scene {
     })
     window.dispatchEvent(showMenuEvent)
     const sendScore = new CustomEvent('send-score', {
-        detail: StartGameScene.score,
+        detail: { score: StartGameScene.score },
     })
     window.dispatchEvent(sendScore)
 
@@ -125,7 +121,8 @@ export default class StartGameScene extends Phaser.Scene {
     StartGameScene.platforms = this.physics.add.staticGroup();
     StartGameScene.platforms.create(512, 575, 'ground').setScale(1).refreshBody();
 
-    // player
+    // playerParticle & player
+    const boatParticle = this.add.particles('blue')
     StartGameScene.player = this.physics.add.sprite(512, 500, 'boat');
     StartGameScene.player.setBounce(0.7);
     StartGameScene.player.setCollideWorldBounds(true, 1, 1);
@@ -168,30 +165,43 @@ export default class StartGameScene extends Phaser.Scene {
         this
     );
 
-    // start game timer
-    StartGameScene.gameTimer = this.time.delayedCall(4000, this.endGame, [], this);
+    // start game timer see `gameTimeInSeconds`
+    StartGameScene.gameTimer = this.time.delayedCall(gameTimeInSeconds*1000, this.endGame, [], this);
     StartGameScene.score = 0
 
     this.objectDrop()
+
+    // particles for boat
+    StartGameScene.playerParticle = boatParticle.createEmitter({
+      speed: 30,
+      scale: { start: 0.1, end: 0 },
+      blendMode: 'ADD',
+      lifespan: 1000,
+      frequency: 10,
+    })
+    StartGameScene.playerParticle.startFollow(StartGameScene.player,0,50)
   }
 
   update(time: number, delta: number): void {
     if (StartGameScene.cursors.left.isDown)
     {
-        StartGameScene.player.setVelocityX(-360);
+      StartGameScene.player.setVelocityX(-360);
+      StartGameScene.playerParticle.start()
     }
     else if (StartGameScene.cursors.right.isDown)
     {
-        StartGameScene.player.setVelocityX(360);
+      StartGameScene.player.setVelocityX(360);
+      StartGameScene.playerParticle.start()
     }
     else
     {
-        StartGameScene.player.setVelocityX(0);
+      StartGameScene.playerParticle.stop()
+      StartGameScene.player.setVelocityX(0);
     }
 
     if (StartGameScene.cursors.up.isDown && StartGameScene.player.body.touching.down)
     {
-        StartGameScene.player.setVelocityY(-130);
+      StartGameScene.player.setVelocityY(-130);
     }
   }
 

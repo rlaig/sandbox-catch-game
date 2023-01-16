@@ -3,13 +3,13 @@ import { ReactNode} from 'react';
 
 type Props = {
   children: ReactNode,
-  onClick?: () => void
+  // onClick?: () => void
 }
 
-const Backdrop: React.FC<Props> = ({ children, onClick }) => {
+const Backdrop: React.FC<Props> = ({ children }) => {
   return (
     <motion.div
-      onClick={onClick}
+      // onClick={onClick}
       className="backdrop"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}

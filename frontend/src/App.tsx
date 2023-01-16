@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useMount } from 'react-use'
 import './App.css'
 import io, { Socket } from 'socket.io-client'
-import menuItem from "./components/menuItem"
+import MenuItem from "./components/menuItem"
 import ScoreDialog from "./components/scoreDialog"
 
 import phaserGame from './components/PhaserGame'
@@ -11,42 +11,33 @@ import StartGameScene from './scenes/StartGameScene'
 
 import { scoresApi } from './api/scoresApi'
 
-import { AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 
 function App() {
   const socket = io(`${window.location.protocol}//${window.location.hostname}:3000`)
   const [phaser, setPhaser] = useState<Game>();
   const [showMainMenu, setShowMainMenu] = useState<boolean>(true);
   const [score, setScore] = useState<number>(0);
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showScoreModal, setShowScoreModal] = useState<boolean>(false);
 
   const showMenu = (event: CustomEvent) => {
-    console.log('CustomEvent showMenu')
+    console.log('CustomEvent showMenu', event)
     setShowMainMenu(event.detail)
   }
   const sendScore = (event: CustomEvent) => {
-    console.log('CustomEvent sendScore')
+    console.log('CustomEvent sendScore', event)
     setScore(event.detail.score)
+    handleScoreModalOpen()
   }
 
   // attach game container
   useMount(() => {
-    // if (!phaser) setPhaser(phaserGame())
+    if (!phaser) setPhaser(phaserGame())
     socket.on('scoreUpdated', updateScore)
     // add event listener
     window.addEventListener('show-menu', (showMenu) as EventListener);
     window.addEventListener('send-score', (sendScore) as EventListener);
   })
-
-  // add custom event listeners for react and phaser to communicate
-  // useEffect(() => {
-  //   window.addEventListener('show-menu', (showMenu) as EventListener);
-  //   window.addEventListener('send-score', (sendScore) as EventListener);
-  //   return () => { 
-  //     window.removeEventListener('show-menu', (showMenu) as EventListener)
-  //     window.removeEventListener('send-score', (showMenu) as EventListener)
-  //   }
-  // }, [])
 
   const updateScore = async (row: any) => {
     console.log('update call', row)
@@ -54,14 +45,9 @@ function App() {
     console.log('score api call', scores)
   }
 
-  const onClickLeaderboards = () => {
-    const sendScore = new CustomEvent('send-score', {
-        detail: {
-          score: 100
-        },
-    })
-    window.dispatchEvent(sendScore)
+  const handleLeaderboards = () => {
     console.log('Leaderboard')
+    handleScoreModalOpen()
   }
 
   const handleStartGame = () => {
@@ -73,9 +59,13 @@ function App() {
     }
   }
 
-  const handleModalClose = () => {
-    setShowModal()
-    // https://fireship.io/lessons/framer-motion-modal/
+  const handleScoreModalOpen = () => {
+    setShowMainMenu(false)
+    setShowScoreModal(true)
+  }
+  const handleScoreModalClose = () => {
+    setShowMainMenu(true)
+    setShowScoreModal(false)
   }
 
   return (
@@ -84,30 +74,34 @@ function App() {
       
         <div className='app-container'>
 
-          <div className='menu' hidden={!showMainMenu}>
+        { showMainMenu && 
+          <motion.div className='menu'
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.9 }}
+            exit={{ opacity: 0 }}
+          >
             <div className='menu-container'>
               <div className='menu-panel'>
-                <div className='menu-title'>Sandbox</div>
-                { menuItem({label: '1', onclick: handleStartGame}) }
-                { menuItem({label: '2', onclick: onClickLeaderboards}) }
-                <div className='menu-title'>{score}</div>
+                <div className='menu-title'>Sandbox VR: Catch Game</div>
+                <MenuItem label={"Start Game"} handleOnclick={handleStartGame}></MenuItem>
+                <MenuItem label={"Leaderboards"} handleOnclick={handleLeaderboards}></MenuItem>
+                {
+                  !!score && <div className='menu-text'>Previous Score: {score}</div>
+                }
               </div>
             </div>
-          </div>
-
-          <div className="score-dialog">
-            <AnimatePresence
-              initial={false}
-              exitBeforeEnter={true}
-              onExitComplete={() => null}
-            >
-              {showModal && <ScoreDialog handleClose={handleModalClose} text="Modal Dialog"></ScoreDialog>}
-            </AnimatePresence>
-          </div>
-
+          </motion.div>
+        }
         </div>
       </div>
 
+      <AnimatePresence
+        initial={false}
+        mode={'wait'}
+        onExitComplete={() => null}
+      >
+        {showScoreModal && <ScoreDialog handleClose={handleScoreModalClose} score={score}></ScoreDialog>}
+      </AnimatePresence>
     </div>
   )
 }
