@@ -19,7 +19,7 @@ const config: Phaser.Types.Core.GameConfig = {
       debug: false,
     },
   },
-  scene: [MainScene, StartGameScene],
+  scene: [MainScene, StartGameScene]
 }
 
 export default function () {

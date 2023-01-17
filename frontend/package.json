@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --mode local-dev",
-    "build": "tsc && vite build",
+    "build": "vite build --mode prod-serma",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -9,7 +9,7 @@ export default (
 
   router.get('/scores', async (req: Request, res: Response) => {
     try {
-      const results = await database.table('scores').orderBy('score').run(connection, {arrayLimit: 100})
+      const results = await database.table('scores').orderBy({index: database.desc('score')}).limit(100).run(connection)
       res.json({
         status: 'ok',
         response: results

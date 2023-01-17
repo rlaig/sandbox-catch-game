@@ -7,6 +7,7 @@ import io from 'socket.io-client'
 import MenuItem from "./components/menuItem"
 import ScoreDialog from "./components/scoreDialog"
 import LeaderboardsDialog from "./components/leaderboardsDialog"
+import GuideDialog from "./components/guide"
 import { scoresApi } from './api/scoresApi'
 
 import {Game} from 'phaser'
@@ -21,6 +22,7 @@ function App() {
   const [score, setScore] = useState<number>(0);
   const [showScoreModal, setShowScoreModal] = useState<boolean>(false)
   const [showLeaderboards, setShowLeaderboards] = useState<boolean>(false)
+  const [showGuide, setShowGuide] = useState<boolean>(false)
 
   const { isLoading, data: scoresData, refetch } = useQuery(['scores-top-100'],
     () => scoresApi.getTop100Scores()
@@ -51,9 +53,12 @@ function App() {
   }
 
   const handleLeaderboards = () => {
-    console.log('Leaderboard')
     setShowMainMenu(false)
     setShowLeaderboards(true)
+  }
+  const handleGuide = () => {
+    setShowMainMenu(false)
+    setShowGuide(true)
   }
 
   const handleStartGame = () => {
@@ -65,6 +70,10 @@ function App() {
     }
   }
 
+  const handleGuideClose = () => {
+    setShowMainMenu(true)
+    setShowGuide(false)
+  }
   const handleLeaderboardsClose = () => {
     setShowMainMenu(true)
     setShowLeaderboards(false)
@@ -88,11 +97,13 @@ function App() {
             <div className='menu-container'>
               <div className='menu-panel'>
                 <div className='menu-title'>Sandbox VR: Catch Game</div>
-                <MenuItem label={"Start Game"} handleOnclick={handleStartGame}></MenuItem>
-                <MenuItem label={"Leaderboards"} handleOnclick={handleLeaderboards}></MenuItem>
                 {
                   !!score && <div className='menu-text'>Previous Score: {score}</div>
                 }
+                <MenuItem label={"Start Game"} handleOnclick={handleStartGame}></MenuItem>
+                <MenuItem label={"Leaderboards"} handleOnclick={handleLeaderboards}></MenuItem>
+                <MenuItem label={"How to play"} handleOnclick={handleGuide}></MenuItem>
+                <div className='menu-text'>by <a href="https://rlaig.com" target='_blank'>rlaig</a></div>
               </div>
             </div>
           </motion.div>
@@ -107,6 +118,7 @@ function App() {
       >
         {showScoreModal && <ScoreDialog handleClose={handleScoreModalClose} recordScore={score} refetch={refetch}></ScoreDialog>}
         {showLeaderboards && <LeaderboardsDialog handleClose={handleLeaderboardsClose} recordScores={scoresData}></LeaderboardsDialog>}
+        {showGuide && <GuideDialog handleClose={handleGuideClose}></GuideDialog>}
       </AnimatePresence>
     </div>
   )

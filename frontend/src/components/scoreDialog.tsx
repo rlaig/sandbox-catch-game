@@ -94,7 +94,7 @@ export const ScoreDialog: React.FC<Props> = ({
           { 
             recordScore > 0 && 
             <>
-              <input onChange={handleNameChange} type="text" placeholder="Enter your name" className="input-name"></input>
+              <input onChange={handleNameChange} type="text" placeholder="Enter your name" className="input-name" maxLength={10}></input>
               <motion.button 
                 className="button submit-button"
                 onClick={handleSubmit}

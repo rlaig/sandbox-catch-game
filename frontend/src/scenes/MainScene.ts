@@ -18,6 +18,8 @@ export default class MainScene extends Phaser.Scene {
     this.load.image('red', '/assets/red.png');
     this.load.image('green', '/assets/green.png');
     this.load.image('blue', '/assets/blue.png');
+    this.load.image('left', '/assets/left.png');
+    this.load.image('right', '/assets/right.png');
   }
 
   create() {

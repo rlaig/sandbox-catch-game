@@ -39,6 +39,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  pointer-events: auto;
 }
 #game-container canvas{
 }
@@ -78,14 +79,19 @@ body {
   font-size: 32px;
   font-weight: 600;
   margin-bottom: 14px;
+  text-align: center;
+  line-height: 32px;
 }
 .menu-text {
   margin: 7px 0px;
   font-size: 18px;
 }
+.menu-text a{
+  color: #eee;
+}
 
 .backdrop {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   height: 100%;
@@ -122,6 +128,45 @@ body {
   border: 2px solid #ff9d00;
   background: linear-gradient(10deg, #ff6a00, #ffaa00); 
   color: #eeeeee;
+  z-index: 20;
+}
+
+.modal-scoreslist {
+  display: flex;
+  justify-content: center;
+  margin-top: 35px;
+  overflow:auto;
+  max-height: 300px;
+  width:100%;
+  text-align: center;
+}
+
+.modal-scoreslist table{
+  width: 100%;
+  border-collapse: collapse;
+}
+.modal-scoreslist thead{
+  position: relative;
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.modal-scoreslist thead th{
+  position: sticky;
+  background: #101315;
+  color: #eeeeee;
+  top:0;
+}
+.modal-scoreslist .modal-text {
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin: 30px 0px;
+}
+
+.modal-text {
+  margin-top: 30px;
+  font-size: 18px;
 }
 
 .modal-text {

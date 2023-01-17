@@ -9,10 +9,11 @@ export const registerRoutes = async (
 ) => { 
   app.get('/setup', async (req: Request, res: Response) => {
     try {
-      const result = await database.db('test').tableCreate('scores').run(connection)
+      const tableCreateResult = await database.db('test').tableCreate('scores').run(connection)
+      const tableIndexCreate = await database.table('scores').indexCreate('score').run(connection)
       res.json({
         status: 'ok',
-        response: result
+        response: [tableCreateResult, tableIndexCreate]
        })
     } catch (error) {
       res.json({ 
