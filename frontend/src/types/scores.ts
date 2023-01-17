@@ -4,4 +4,13 @@ export type Score = {
   score: number
 }
 
-export type ScoreResponse = Score
+export type ScoreSubmitResult = {
+  "deleted": number
+  "errors": number
+  "generated_keys": string[]
+  "inserted": number
+  "replaced": number
+  "skipped": number
+  "unchanged": number
+}
+

@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 
 // set game time here
-const gameTimeInSeconds = 60
+const gameTimeInSeconds = 4
 
 export default class StartGameScene extends Phaser.Scene {
   constructor() {

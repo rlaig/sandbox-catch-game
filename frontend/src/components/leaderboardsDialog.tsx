@@ -6,11 +6,13 @@ import Backdrop from './backdrop';
 import { Score } from '../types/scores'
 
 type Props = {
+  showRank?: string,
   recordScores?: Score[]
   handleClose: () => void
 }
 
 export const LeaderboardsDialog: React.FC<Props> = ({
+  showRank,
   recordScores,
   handleClose
 }) => {
@@ -63,7 +65,7 @@ export const LeaderboardsDialog: React.FC<Props> = ({
                   </thead>
                   <tbody>
                   {recordScores.map((value, i) => {
-                    return <tr key={i}>
+                    return <tr key={i} className={(showRank && showRank == value.id) ? 'rank-highlight' : ''}>
                       <td>{i+1}</td>
                       <td>{value.name}</td>
                       <td>{value.score}</td>

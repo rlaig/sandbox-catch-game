@@ -3,10 +3,11 @@ import { motion } from 'framer-motion'
 import { useMutation } from '@tanstack/react-query'
 import { scoresApi } from '../api/scoresApi'
 import Backdrop from './backdrop';
+import { ScoreSubmitResult } from '../types/scores';
 
 type Props = {
   recordScore: number
-  handleClose: () => void
+  handleClose: (rank?: string) => void
   refetch: () => void
 }
 
@@ -42,15 +43,19 @@ export const ScoreDialog: React.FC<Props> = ({
   const [inputName, setInputName] = useState<string>('')
   const [inputDirty, setInputDirty] = useState<boolean>(false)
 
-  const handleOnSuccess = useCallback(()=>{
+  const handleOnSuccess = useCallback((data: ScoreSubmitResult)=>{
+    console.log('handleOnSuccess', data)
     refetch()
     alert('Score Successfully Submitted!')
-    handleClose()
+    handleClose(data['generated_keys'][0])
   },[])
 
   const { mutateAsync: submitScore, isLoading } = useMutation(scoresApi.submitScore,
     {
       onSuccess: handleOnSuccess,
+      onError: ()=>{
+        alert('Something went wrong!')
+      }
     }
   )
 
@@ -108,7 +113,7 @@ export const ScoreDialog: React.FC<Props> = ({
           
           <motion.button 
             className="button close-button"
-            onClick={handleClose}
+            onClick={()=>handleClose}
             whileHover={{ scale: 1 }}
             whileTap={{ scale: 0.9 }}
           >

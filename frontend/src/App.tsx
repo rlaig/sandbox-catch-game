@@ -22,6 +22,7 @@ function App() {
   const [score, setScore] = useState<number>(0);
   const [showScoreModal, setShowScoreModal] = useState<boolean>(false)
   const [showLeaderboards, setShowLeaderboards] = useState<boolean>(false)
+  const [showRank, setShowRank] = useState<string>()
   const [showGuide, setShowGuide] = useState<boolean>(false)
 
   const { isLoading, data: scoresData, refetch } = useQuery(['scores-top-100'],
@@ -75,11 +76,15 @@ function App() {
     setShowGuide(false)
   }
   const handleLeaderboardsClose = () => {
+    setShowRank(undefined)
     setShowMainMenu(true)
     setShowLeaderboards(false)
   }
-  const handleScoreModalClose = () => {
-    setShowMainMenu(true)
+  const handleScoreModalClose = (rank?: string) => {
+    if(score > 0) {
+      setShowLeaderboards(true)
+      setShowRank(rank)
+    } else setShowMainMenu(true)
     setShowScoreModal(false)
   }
 
@@ -117,7 +122,7 @@ function App() {
         onExitComplete={() => null}
       >
         {showScoreModal && <ScoreDialog handleClose={handleScoreModalClose} recordScore={score} refetch={refetch}></ScoreDialog>}
-        {showLeaderboards && <LeaderboardsDialog handleClose={handleLeaderboardsClose} recordScores={scoresData}></LeaderboardsDialog>}
+        {showLeaderboards && <LeaderboardsDialog handleClose={handleLeaderboardsClose} recordScores={scoresData} showRank={showRank}></LeaderboardsDialog>}
         {showGuide && <GuideDialog handleClose={handleGuideClose}></GuideDialog>}
       </AnimatePresence>
     </div>
