@@ -2,6 +2,13 @@
 
 body {
   margin: 0px;
+  -webkit-touch-callout: none;/*for mobile*/
+  -webkit-user-select: none;/*for chrome*/
+  -khtml-user-select: none;/*for safari*/
+  -moz-user-select: none;/*for Mozilla*/
+  -ms-user-select: none;/*for ms*/
+  -o-user-select: none;/*for opera*/
+  user-select: none;/*base css ,but not work in all browsers*/
 }
 :root {
   font-family: "Montserrat", sans-serif;

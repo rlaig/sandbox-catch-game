@@ -89,7 +89,7 @@ export const GuideDialog: React.FC<Props> = ({
                                 <tr>
                                     <td colSpan={2}>
                                         <br />
-                                        Prevent catching these guys will deduct you 100 points
+                                        Catching these guys will deduct you 100 points!
                                     </td>
                                 </tr>
                                 <tr>
