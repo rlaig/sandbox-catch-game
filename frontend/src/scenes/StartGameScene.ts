@@ -85,7 +85,6 @@ export default class StartGameScene extends Phaser.Scene {
         StartGameScene.moveRight = false
       })
 
-
     // cursor manager
     StartGameScene.cursors = this.input.keyboard.createCursorKeys();
 

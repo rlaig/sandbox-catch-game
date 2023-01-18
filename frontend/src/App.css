@@ -33,6 +33,12 @@ body {
   width: 100%;
 }
 
+@media (min-width: 399px){
+  /* apply when more than max width */
+}
+@media (max-width: 400px){
+  /* apply when less than max width */
+}
 
 #game-container{
   position: relative;
@@ -48,11 +54,7 @@ body {
   justify-content: center;
   pointer-events: auto;
 }
-#game-container canvas{
-}
 
-.App {
-}
 .app-container{
   position: absolute;
   top: 0;

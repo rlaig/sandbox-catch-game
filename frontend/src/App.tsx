@@ -14,7 +14,6 @@ import {Game} from 'phaser'
 import phaserGame from './components/PhaserGame'
 import StartGameScene from './scenes/StartGameScene'
 
-
 function App() {
   const socket = io(`${window.location.protocol}//${window.location.hostname}:3000`)
   const [phaser, setPhaser] = useState<Game>();
