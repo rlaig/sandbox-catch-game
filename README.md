@@ -4,7 +4,6 @@
 a catch game fullstack assignment by raymundo laig
 
 [Live Demo](http://pbase.rlaig.com)
-[Live Rethink DB Dashboard](http://pbase.rlaig.com:9090/)
 
 # backend
 
