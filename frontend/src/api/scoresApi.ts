@@ -1,11 +1,6 @@
 
 import { apiClient } from './apiClient'
-import { Score, ScoreSubmitResult } from '../types/scores'
-
-type ScorePayload = {
-  name: string
-  score: number
-}
+import { Score, ScoreSubmitResult, ScorePayload } from '../types/scores'
 
 const getTop100Scores = async (): Promise<Score[]> => {
   const result = await apiClient.get('/scores')

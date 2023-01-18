@@ -22,6 +22,6 @@ const config: Phaser.Types.Core.GameConfig = {
   scene: [MainScene, StartGameScene]
 }
 
-export default function () {
+export default () => {
     return new Phaser.Game(config)
 }

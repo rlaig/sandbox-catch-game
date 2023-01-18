@@ -1,7 +1,5 @@
-import React, { useState, useCallback } from 'react'
+import React from 'react'
 import { motion } from 'framer-motion'
-import { useMutation } from '@tanstack/react-query'
-import { scoresApi } from '../api/scoresApi'
 import Backdrop from './backdrop';
 import { Score } from '../types/scores'
 

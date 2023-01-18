@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState } from 'react'
 import { useMount } from 'react-use'
 import { useQuery } from '@tanstack/react-query'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -122,7 +122,7 @@ function App() {
         onExitComplete={() => null}
       >
         {showScoreModal && <ScoreDialog handleClose={handleScoreModalClose} recordScore={score} refetch={refetch}></ScoreDialog>}
-        {showLeaderboards && <LeaderboardsDialog handleClose={handleLeaderboardsClose} recordScores={scoresData} showRank={showRank}></LeaderboardsDialog>}
+        {(showLeaderboards && !isLoading) && <LeaderboardsDialog handleClose={handleLeaderboardsClose} recordScores={scoresData} showRank={showRank}></LeaderboardsDialog>}
         {showGuide && <GuideDialog handleClose={handleGuideClose}></GuideDialog>}
       </AnimatePresence>
     </div>

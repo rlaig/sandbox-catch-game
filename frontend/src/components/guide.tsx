@@ -14,12 +14,10 @@ import p3 from '../assets/p3.png'
 import p4 from '../assets/p4.png'
 
 type Props = {
-  recordScores?: Score[]
   handleClose: () => void
 }
 
 export const GuideDialog: React.FC<Props> = ({
-  recordScores,
   handleClose
 }) => {
   const flip = {

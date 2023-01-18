@@ -14,3 +14,8 @@ export type ScoreSubmitResult = {
   "unchanged": number
 }
 
+export type ScorePayload = {
+  name: string
+  score: number
+}
+

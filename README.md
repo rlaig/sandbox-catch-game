@@ -4,6 +4,7 @@
 a catch game fullstack assignment by raymundo laig
 
 [Live Demo](http://pbase.rlaig.com)
+[Live Rethink DB Dashboard](http://pbase.rlaig.com:9090/)
 
 # backend
 
@@ -29,20 +30,22 @@ npm run dev
 You can skip this entirely and use the one readily available on my host by default
 or if you wish you can proceed and follow the steps to run it locally on your machine:
 
-1. Install and setup [RethinkDB](https://rethinkdb.com/docs/install/) locally
-2. Open `backend\src\config\index.ts` and change `host`, `port` and `db` if needed
+1. Install and setup [RethinkDB](https://rethinkdb.com/docs/install/) locally on your machine
+2. Run the server [Guide](https://rethinkdb.com/docs/start-a-server/)
+3. Open `backend\src\config\index.ts` and change `host`, `port` and `db`
+example default localhost config: 
 ```javascript
 ...
   connectionOptions: {
     server: {
-      host: '138.128.124.137',
-      port: 28015
+      host: 'localhost',
+      port: 29015
     },
     db: 'test'
   }
 ...
 ```
-3. Run the setup endpoint once to create db table and set index
+4. Run the setup endpoint once to create db table and set index
 `http://localhost:3010/setup`
 
 ## API Endpoints
@@ -67,7 +70,7 @@ Sample Response:
 Fetch Scores - top 100 scores order by score descending
 > Method: `GET`
 URL: `'/scores'`
-Sample Response:
+Success Response:
 ```
 {
 	"status":"ok",
@@ -136,7 +139,8 @@ yarn dev
 ```
 
 ## Configuration
-Api base url `frontend\.env.local-dev`
+Configure the `backend` api base url if needed
+`frontend\.env.local-dev`
 ```
 ...
 VITE_APP_API_BASE_URL = http://localhost:3010

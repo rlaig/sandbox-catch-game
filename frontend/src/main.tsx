@@ -12,10 +12,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 )
 
 /*
- - to improve
- - make it PWA
- - local db first / sync when update received
-
- - current score
- - timer
+ some things to improve:
+ - make PWA
+ - make use of local db / sync local db when update received
 */
