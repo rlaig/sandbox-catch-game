@@ -9,8 +9,8 @@ const config: Phaser.Types.Core.GameConfig = {
   backgroundColor: '#282c34',
   scale: {
     mode: Phaser.Scale.ScaleModes.FIT,
-    width: 1024,
-    height: 576,
+    width: 1024, //800
+    height: 576, //576 //600
   },
   physics: {
     default: 'arcade',

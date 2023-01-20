@@ -13,6 +13,7 @@ import { scoresApi } from './api/scoresApi'
 import {Game} from 'phaser'
 import phaserGame from './components/PhaserGame'
 import StartGameScene from './scenes/StartGameScene'
+import rotate from './assets/rotate.gif'
 
 function App() {
   const socket = io(`${window.location.protocol}//${window.location.hostname}:3000`)
@@ -89,8 +90,11 @@ function App() {
 
   return (
     <div className='App'>
+    <div className="overlay-mobile">
+      <img src={rotate}/>
+      <p>to play use your device in landscape mode</p>
+    </div>
       <div id="game-container">
-      
         <div className='app-container'>
 
         { showMainMenu && 

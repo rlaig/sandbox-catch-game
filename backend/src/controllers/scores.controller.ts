@@ -1,76 +1,78 @@
-import { Router, Request, Response } from 'express';
 import type { R, Connection } from 'rethinkdb-ts'
+import {Request } from 'express'
 
-export default (
+export const ScoresController = (
   database: R,
   connection: Connection
 ) => {
-  const router = Router()
 
-  router.get('/scores', async (req: Request, res: Response) => {
+  const getScores = async(req: Request) => {
     try {
       const results = await database.table('scores').orderBy({index: database.desc('score')}).limit(100).run(connection)
-      res.json({
+      return {
         status: 'ok',
         response: results
-      })
+      }
     } catch (err) {
-      res.json({
-        status: 'ok',
+      return {
+        status: 'error',
         message: err
-      })
+      }
     }
-  })
+  }
 
-  router.post('/scores/add', async (req: Request, res: Response) => {
+  const postScoresAdd = async(req: Request) => {
     try {
       const { name, score } = req.body
-      console.log(req.body)
       if (score && !Number.isInteger(score)) {
-        res.json({
+        return {
           status: 'error',
           message: 'invalid score'
-        })
-        return
+        }
       }
       if (name == undefined || score == undefined)
-        res.json({
+        return {
           status: 'error',
           message: 'invalid request'
-        })
+        }
       else {
         const payload = {
           name: String(name),
           score: parseInt(score)
         }
         const results = await database.table('scores').insert(payload).run(connection)
-        res.json({
+        return {
           status: 'ok',
           results: results
-        })
+        }
       }
     } catch (err) {
-      res.json({
+      return {
         status: 'error',
         message: err
-      })
+      }
     }
-  })
+  }
 
-  router.get('/scores/reset', async (req: Request, res: Response) => {
+  const getScoresReset = async(req: Request) => {
     try {
       const results = await database.table('scores').delete().run(connection)
-      res.json({
+      return {
         status: 'ok',
         response: results
-      })
+      }
     } catch (err) {
-      res.json({
-        status: 'ok',
+      return {
+        status: 'error',
         message: err
-      })
+      }
     }
-  })
+  }
 
-  return router
+
+  return {
+    getScores,
+    postScoresAdd,
+    getScoresReset,
+  }
 }

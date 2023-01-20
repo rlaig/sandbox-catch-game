@@ -33,11 +33,37 @@ body {
   width: 100%;
 }
 
-@media (min-width: 399px){
+@media (min-width: 500px){
   /* apply when more than max width */
+  .overlay-mobile {
+    display: none;
+  }
 }
-@media (max-width: 400px){
+@media (max-width: 500px){
   /* apply when less than max width */
+  .overlay-mobile {
+    display: flex;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    background-color: #222;
+    z-index: 500;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .overlay-mobile img{
+    max-width: 200px;
+  }
+  .overlay-mobile p{
+    font-size: 22px;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 0px 20px
+  }
 }
 
 #game-container{
