@@ -113,7 +113,7 @@ export const ScoreDialog: React.FC<Props> = ({
           
           <motion.button 
             className="button close-button"
-            onClick={()=>handleClose}
+            onClick={()=>{handleClose()}}
             whileHover={{ scale: 1 }}
             whileTap={{ scale: 0.9 }}
           >

@@ -84,16 +84,19 @@ function App() {
     if(score > 0) {
       setShowLeaderboards(true)
       setShowRank(rank)
-    } else setShowMainMenu(true)
+    } else {
+      setShowMainMenu(true)
+    }
     setShowScoreModal(false)
   }
 
   return (
     <div className='App'>
-    <div className="overlay-mobile">
-      <img src={rotate}/>
-      <p>to play use your device in landscape mode</p>
-    </div>
+      <div className="overlay-mobile">
+        <img src={rotate}/>
+        <p>to play use your device in landscape mode</p>
+      </div>
+
       <div id="game-container">
         <div className='app-container'>
 
