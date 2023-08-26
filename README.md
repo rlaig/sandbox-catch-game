@@ -1,9 +1,7 @@
 
 # sandbox-test
 
-a catch game fullstack assignment by raymundo laig
-
-[Live Demo](http://pbase.rlaig.com)
+a catch game fullstack dev by raymundo laig
 
 # backend
 
