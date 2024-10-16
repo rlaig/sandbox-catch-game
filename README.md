@@ -1,5 +1,5 @@
 
-# sandbox-test
+# sandbox-catch-game
 
 a catch game fullstack dev by raymundo laig
 
